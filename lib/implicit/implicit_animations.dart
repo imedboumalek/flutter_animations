@@ -36,9 +36,36 @@ class AnimatedFooPage extends StatefulWidget {
 }
 
 class _AnimatedFooState extends State<AnimatedFooPage> {
+  bool animate = false;
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("AnimatedFoo"),
+      ),
+      body: Center(
+        child: AnimatedOpacity(
+          duration: const Duration(milliseconds: 1500),
+          opacity: animate ? 1 : 0.2,
+          child: AnimatedContainer(
+            duration: const Duration(seconds: 1),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(animate ? 10 : 50),
+                color: animate ? Colors.red : Colors.green),
+            width: animate ? 300 : 150,
+            height: animate ? 300 : 150,
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            animate = !animate;
+          });
+        },
+        child: Icon(Icons.add),
+      ),
+    );
   }
 }
 
