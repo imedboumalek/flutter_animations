@@ -77,8 +77,48 @@ class TweenAnimationBuilderPage extends StatefulWidget {
 }
 
 class TweenAnimationBuilderPageState extends State<TweenAnimationBuilderPage> {
+  double sliderValue = 0.0;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: SizedBox());
+    return Scaffold(
+        body: Stack(
+      children: [
+        Image.asset(
+          "assets/stars.jpeg",
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: double.infinity,
+        ),
+        Align(
+          alignment: Alignment.center,
+          child: SizedBox(
+            width: 300,
+            height: 300,
+            child: TweenAnimationBuilder(
+              duration: const Duration(seconds: 1),
+              tween: ColorTween(
+                  begin: Colors.white, end: Color.lerp(Colors.white, Colors.amber, sliderValue)),
+              builder: (_, color, __) => ColorFiltered(
+                colorFilter: ColorFilter.mode(color as Color, BlendMode.modulate),
+                child: Image.asset("assets/moon.png"),
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: Slider(
+              value: sliderValue,
+              onChanged: (v) {
+                print(v);
+                setState(() {
+                  sliderValue = v;
+                });
+              }),
+        )
+      ],
+    ));
   }
 }
