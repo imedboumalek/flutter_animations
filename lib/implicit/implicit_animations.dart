@@ -98,9 +98,10 @@ class TweenAnimationBuilderPageState extends State<TweenAnimationBuilderPage> {
               duration: const Duration(seconds: 1),
               tween: ColorTween(
                   begin: Colors.white, end: Color.lerp(Colors.white, Colors.amber, sliderValue)),
-              builder: (_, color, __) => ColorFiltered(
+              child: Image.asset("assets/moon.png"),
+              builder: (_, color, child) => ColorFiltered(
                 colorFilter: ColorFilter.mode(color as Color, BlendMode.modulate),
-                child: Image.asset("assets/moon.png"),
+                child: child,
               ),
             ),
           ),

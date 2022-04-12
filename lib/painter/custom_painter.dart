@@ -24,8 +24,15 @@ class CustomPainterPage extends StatelessWidget {
 
 class MyPainter extends CustomPainter {
   @override
-  void paint(Canvas canvas, Size size) {}
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.blue
+      ..strokeWidth = 5
+      ..strokeCap = StrokeCap.round;
+    final path = Path()..lineTo(50, 150);
+    canvas.drawPath(path, paint);
+  }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

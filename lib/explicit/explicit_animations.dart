@@ -97,14 +97,65 @@ class AnimatedBuilderPage extends StatefulWidget {
   State<AnimatedBuilderPage> createState() => _AnimatedBuilderPageState();
 }
 
-class _AnimatedBuilderPageState extends State<AnimatedBuilderPage> {
+class _AnimatedBuilderPageState extends State<AnimatedBuilderPage>
+    with SingleTickerProviderStateMixin<AnimatedBuilderPage> {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
+    _animation = Tween<double>(begin: 0.2, end: 1).animate(_controller);
+
+    _animation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _controller.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        _controller.forward();
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('AnimatedBuilder & AnimatedWidget'),
       ),
-      body: SizedBox(),
+      body: Center(child: DrunkMostatil(animation: _animation)),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _controller.isAnimating ? _controller.stop() : _controller.forward();
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class DrunkMostatil extends AnimatedWidget {
+  const DrunkMostatil({required Listenable animation}) : super(listenable: animation);
+
+  @override
+  Widget build(BuildContext context) {
+    final animation = listenable as Animation<double>;
+    return Transform(
+      transform: Matrix4.skewX(animation.value),
+      child: Container(
+        decoration: BoxDecoration(color: Colors.green),
+        width: 300,
+        height: 300,
+      ),
     );
   }
 }
